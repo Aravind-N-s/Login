@@ -1,0 +1,46 @@
+body{
+    background: blue
+  }
+
+#form{
+    border-radius: 1em 4em 1em 4em / 2em 1em 2em 1em;
+    background:white;
+    margin-Top: 10px;
+    margin-Left: 25%;
+    margin-Right: 25%;
+    text-shadow: 2px 1px 0px white;
+    border-style: solid;
+  }
+
+#login{
+  margin-left: 50%;
+  margin-top: 15%;
+}
+
+#input{
+  margin-Top: 2px;
+  margin-Left: 50px;
+  margin-Right: 50px;
+  text-align:center;
+  
+}
+
+#button{
+  border-style: solid;
+  margin-Top: 10px;
+  margin-Left: 50px;
+  margin-Right: 50px;
+}
+  h2 {
+    color: black;
+    text-align:center;
+  }
+
+  h3{
+    color: black;
+    text-align:center;
+  }
+
+#center{
+    text-align:center;
+}

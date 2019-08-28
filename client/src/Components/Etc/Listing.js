@@ -48,7 +48,6 @@ export default class Listing extends React.Component {
         }
     }
     render(){
-        console.log(this.state.users)
         return (
             <div>
                 {this.state.user &&(

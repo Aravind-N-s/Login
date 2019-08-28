@@ -19,6 +19,7 @@ class Login extends React.Component{
             [e.target.name]:e.target.value
         }))
     }
+        
     handleSubmit(e){
         e.preventDefault()
         const formData={
@@ -34,30 +35,30 @@ class Login extends React.Component{
                 if(token){
                     localStorage.setItem('userAuthToken',token)
                     this.props.handleAuth(true)
-                    this.props.history.push('/')
+                    this.props.history.push('/users/account')
                 }
             }
         })
         .catch(err =>{
             alert(err)
         })
-
     }
+    
     render(){
         return(
-            <FormGroup>
+            <FormGroup id="form">
                 <h2>LOGIN</h2>
-                <FormControl>
+                <FormControl id="input">
                     <InputLabel>Email address</InputLabel>
                     <Input type="text" name="email" value={this.state.email}  onChange={this.handleChange} placeholder="Email"/>
                     <FormHelperText>Must Haved Registered</FormHelperText>
                 </FormControl>
-                <FormControl>
+                <FormControl id="input">
                     <InputLabel>Password</InputLabel>
                     <Input  type="password" name="password" value={this.state.password} onChange={this.handleChange} placeholder="Password" />
                 </FormControl>
-                <Button onClick={this.handleSubmit}>Submit</Button>
-                <Button><Link to="/users/register">Register</Link></Button> 
+                <Button id="button" onClick={this.handleSubmit}>Submit</Button> 
+                <Button id="button"><Link to="/users/register">Register</Link></Button>
             </FormGroup>
         )
     }

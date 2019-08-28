@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter, Switch, Link, Route} from 'react-router-dom'
+import './Config/index.css'
 import {Button} from '@material-ui/core'
+import {BrowserRouter, Switch, Link, Route} from 'react-router-dom'
 
 import Login from './Components/User/Login'
 import Register from './Components/User/Register'
+import Password from './Components/User/Password'
 import Account from './Components/User/Account'
 import Logout from './Components/User/Logout'
 
@@ -35,20 +37,19 @@ class App extends React.Component {
                 <div>
                     {!this.state.isAuthenticated &&(
                         <div>
-                            <Button color="primary"><Link style={{color:'red'}} to='/users/login'>Login</Link></Button>
+                            <Button id="login" size="large" variant="outlined" color="secondary"><Link style={{color:'red'}} to='/users/login'>Login</Link></Button>
                             <Switch>
                                 <>
                                     <Route exact strict path="/users/login" render={(props)=>{
                                         return <Login {...props } handleAuth={this.handleAuth}/>}}/>
-                                    <Route exact strict path="/users/register" render = {(props) => {
-                                        return <Register {...props} handleAuth={this.handleAuth}/>}}/>
+                                    <Route exact strict path="/users/register" component={Register} />
+                                    <Route exact strict path="/users/pass" component={Password} />
                                 </>
                             </Switch>
                         </div>
                     )}
                     {this.state.isAuthenticated && (
                         <div>
-                            <Listing />
                             <Link to='/users/account'>Account</Link>
                             <Switch>
                                 <>

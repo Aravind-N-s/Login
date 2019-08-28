@@ -41,23 +41,23 @@ class Register extends React.Component{
 
     render(){
         return(    
-            <FormGroup>
+            <FormGroup id="form">
                 <h2>Register</h2>
-                <FormControl>
+                <FormControl id="input">
                     <InputLabel>User Name</InputLabel>
                     <Input type="text" name="username" value={this.state.username} onChange={this.handleChange} placeholder="User Name"/>
                     <FormHelperText>User Name Must Be Unique</FormHelperText>
                 </FormControl>
-                <FormControl>
+                <FormControl id="input">
                     <InputLabel>Email address</InputLabel>
                     <Input type="text" name="email" value={this.state.email}  onChange={this.handleChange} placeholder="Email"/>
                 </FormControl>
-                <FormControl>
+                <FormControl id="input">
                     <InputLabel>Password</InputLabel>
                     <Input  type="password" name="password" value={this.state.password} onChange={this.handleChange} placeholder="Password" />
                     <FormHelperText>Must have 1 Uppercase, Lowercase, Number, Special Character</FormHelperText>
                 </FormControl>
-                <Button onClick={this.handleSubmit}>Submit</Button>
+                <Button id="button" onClick={this.handleSubmit}>Submit</Button>
             </FormGroup>     
         )
     }

@@ -12,7 +12,6 @@ router.post('/register', (req,res) => {
         .then(user => {
             // res.json(user)
             res.json(user)
-            console.log(user,"user registered")
         })
         .catch(err =>{
             res.send(err)
@@ -38,7 +37,7 @@ router.post('/login', (req,res) =>{
 router.get('/account',authenticateUser, (req,res)=>{
     const {user} = req
     // res.send(user)
-    res.send(_.pick(user, ['_id','username','email','createdAt','Admin']))
+    res.send(_.pick(user, ['_id','username','email','Admin','password']))
 })
 //localhost:3005/users/info
 router.get('/info',authenticateUser, (req,res) =>{
@@ -56,6 +55,34 @@ router.get('/info',authenticateUser, (req,res) =>{
         res.send(err)
     })
 
+})
+//localhost:3005/users/reset/id
+router.put('/reset/:id', (req,res) =>{
+    // const id = req.params.id
+    const body = req.body
+    const {user} = req
+    console.log(body.email)
+    User.findByCredentials(body.email, body.passwordCheck)
+        .then(user => {
+            User.findByIdAndUpdate({
+                user: user._id
+            }, { $set: {password: body.confirm} }, {new: true, runValidators: true})
+            .then((user) => {
+                if(!user){
+                    res.send(_.pick(user, ['_id','username','email','createdAt']))
+                }
+                res.json(user)
+            })
+            .catch((err) => {
+                res.json(err)
+            })
+        })
+        .then(token =>{
+            res.send(_.pick(user, ['_id','username','email','createdAt']))
+        })
+        .catch(err => {
+            res.send(err)
+        })
 })
 //localhost:3005/users/logout
 router.delete('/:id',authenticateUser, (req,res) =>{
