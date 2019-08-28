@@ -49,7 +49,7 @@ export default class Listing extends React.Component {
     }
     render(){
         return (
-            <div>
+            <div id="form">
                 {this.state.user &&(
                     this.state.user.Admin ? (
                     <>
@@ -60,12 +60,13 @@ export default class Listing extends React.Component {
                                         return (<ListItem key={us._id}>{us.email}<Button onClick={() => this.handleRemove(us._id)}>X</Button></ListItem>)
                                     }
                             }))}
-                            <Link to="/">Back</Link>
+                            <Link to="/users/account">Back</Link>
                         </List>
                     </>
                 ):(
                     <>
                         <p>Not Admin</p>
+                        <Link to="/users/account">Back</Link>
                     </>
                 ))}  
                 

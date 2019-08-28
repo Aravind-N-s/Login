@@ -6,7 +6,7 @@ import {BrowserRouter, Switch, Link, Route} from 'react-router-dom'
 
 import Login from './Components/User/Login'
 import Register from './Components/User/Register'
-import Password from './Components/User/Password'
+import Password from './Components/User/PasswordReset'
 import Account from './Components/User/Account'
 import Logout from './Components/User/Logout'
 
@@ -43,17 +43,18 @@ class App extends React.Component {
                                     <Route exact strict path="/users/login" render={(props)=>{
                                         return <Login {...props } handleAuth={this.handleAuth}/>}}/>
                                     <Route exact strict path="/users/register" component={Register} />
-                                    <Route exact strict path="/users/pass" component={Password} />
                                 </>
                             </Switch>
                         </div>
                     )}
                     {this.state.isAuthenticated && (
                         <div>
-                            <Link to='/users/account'>Account</Link>
+                            <h2>Account</h2>
                             <Switch>
                                 <>
                                     <Route exact strict path="/users/account" component={Account}/>
+                                    <Route exact strict path="/users/password" component={Password}/>
+                                    <Route exact strict path="/listing" component={Listing}/>
                                     <Route exact strict path="/users/logout" render={(props)=>{
                                         return <Logout {...props} handleAuth={this.handleAuth}/> }}/>
                                 </>
