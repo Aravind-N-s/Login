@@ -7,7 +7,6 @@ class Register extends React.Component{
             super()
             this.state={
                 username:'',
-                email:'',
                 password:''
             }
             this.handleChange=this.handleChange.bind(this)
@@ -23,7 +22,6 @@ class Register extends React.Component{
         e.preventDefault()
         const formData={
             username:this.state.username,
-            email:this.state.email,
             password:this.state.password
         }
         axios.post(`/users/register`,formData)
@@ -47,10 +45,6 @@ class Register extends React.Component{
                     <InputLabel>User Name</InputLabel>
                     <Input type="text" name="username" value={this.state.username} onChange={this.handleChange} placeholder="User Name"/>
                     <FormHelperText>User Name Must Be Unique</FormHelperText>
-                </FormControl>
-                <FormControl id="input">
-                    <InputLabel>Email address</InputLabel>
-                    <Input type="text" name="email" value={this.state.email}  onChange={this.handleChange} placeholder="Email"/>
                 </FormControl>
                 <FormControl id="input">
                     <InputLabel>Password</InputLabel>

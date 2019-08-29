@@ -18,16 +18,17 @@ router.post('/register', (req,res) => {
         })
 })
 //localhost:3005/users/login
-router.post('/login', (req,res) =>{
+router.post('/login',(req,res) =>{
     const body = req.body  
-    User.findByCredentials(body.email, body.password)
+    {validatorUrl: null}
+    User.findByCredentials(body.user, body.password)
         .then(user => {
             return user.generateToken()
         })
         .then(token =>{
             // res.setHeader('x-auth',token).send({})
             res.send({token})
-            res.send(_.pick(user, ['_id','username','email','createdAt']))
+            res.send(_.pick(user, ['_id','username']))
         })
         .catch(err => {
             res.send(err)
@@ -37,7 +38,7 @@ router.post('/login', (req,res) =>{
 router.get('/account',authenticateUser, (req,res)=>{
     const {user} = req
     // res.send(user)
-    res.send(_.pick(user, ['_id','username','email','Admin','password']))
+    res.send(_.pick(user, ['_id','username','Admin','password']))
 })
 //localhost:3005/users/info
 router.get('/info',authenticateUser, (req,res) =>{
@@ -46,7 +47,7 @@ router.get('/info',authenticateUser, (req,res) =>{
         res.json((users.map(user => 
         {
             if(!user.Admin){
-                return(_.pick(user,['_id','email']))
+                return(_.pick(user,['_id','username']))
             }
         }
         )))        
@@ -61,28 +62,27 @@ router.put('/reset/:id',authenticateUser, (req,res) =>{
     // const id = req.params.id
     const body = req.body
     const {user} = req
-    console.log(body.passwordCheck)
-    // User.findByCredentials(user.email, body.passwordCheck)
-    //     .then(user => {
-    //         User.findByIdAndUpdate({
-    //             user: user._id
-    //         }, { $set: {password: body.confirm} }, {new: true, runValidators: true})
-    //         .then((user) => {
-    //             if(!user){
-    //                 res.send(_.pick(user, ['_id','username','email','createdAt']))
-    //             }
-    //             res.json(user)
-    //         })
-    //         .catch((err) => {
-    //             res.json(err)
-    //         })
-    //     })
-    //     .then(token =>{
-    //         res.send(_.pick(user, ['_id','username','email','createdAt']))
-    //     })
-    //     .catch(err => {
-    //         res.send(err)
-    //     })
+    User.findByCredentials(user.username, body.password)
+        .then(user => {
+            User.findByIdAndUpdate({
+                user: user._id 
+            }, { $set: (user.password = body.confirm) }, {new: true, runValidators: true})
+            .then((user) => {
+                if(!user){
+                    res.send(_.pick(user, ['_id','username','createdAt']))
+                }
+                res.json(user)
+            })
+            .catch((err) => {
+                res.json(err)
+            })
+        })
+        .then(user =>{
+            res.send(_.pick(user, ['_id','username','createdAt']))
+        })
+        .catch(err => {
+            res.send(err)
+        })
 })
 //localhost:3005/users/logout
 router.delete('/:id',authenticateUser, (req,res) =>{

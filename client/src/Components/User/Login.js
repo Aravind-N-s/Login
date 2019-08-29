@@ -7,7 +7,7 @@ class Login extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            email:'',
+            user:'',
             password:''
         }
         this.handleChange=this.handleChange.bind(this)
@@ -23,7 +23,7 @@ class Login extends React.Component{
     handleSubmit(e){
         e.preventDefault()
         const formData={
-            email:this.state.email,
+            user:this.state.user,
             password:this.state.password
         }
         axios.post(`/users/login`,formData)
@@ -40,7 +40,7 @@ class Login extends React.Component{
             }
         })
         .catch(err =>{
-            alert(err)
+            alert(JSON.stringify(err))
         })
     }
     
@@ -49,8 +49,8 @@ class Login extends React.Component{
             <FormGroup id="form">
                 <h2>LOGIN</h2>
                 <FormControl id="input">
-                    <InputLabel>Email address</InputLabel>
-                    <Input type="text" name="email" value={this.state.email}  onChange={this.handleChange} placeholder="Email"/>
+                    <InputLabel>User Name</InputLabel>
+                    <Input type="text" name="user" value={this.state.user}  onChange={this.handleChange} placeholder="User Name"/>
                     <FormHelperText>Must Haved Registered</FormHelperText>
                 </FormControl>
                 <FormControl id="input">

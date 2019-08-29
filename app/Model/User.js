@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema 
 
 const userSchema = new Schema ({
     username:{
@@ -14,25 +13,17 @@ const userSchema = new Schema ({
     Admin:{
         type: Boolean
     },
-    email:{
-        type: String,
-        required: true,
-        unique: true,
-        //how to check format of email
-        validate:{
-            validator: function(value){
-                return validator.isEmail(value)
-            },
-            message: function(){
-                return 'Invalid Email Format'
-            }
-        }
-    },
     password:{
         type: String,
-        required: true,
-        minlength: 6,
-        maxlength: 128
+        required: true,   
+        validate:{
+            validator: function(value){
+                return validator.matches(value, /(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/)
+            },
+            message: function(){
+                return 'Invalid Password Format'
+            }
+        }     
     },
     tokens:[{
         token:{
@@ -45,43 +36,21 @@ const userSchema = new Schema ({
     }] 
 })
 
-//pre hooks
-userSchema.pre('save', function(next){
-    const user = this
-    if(user.isNew){
-        if(user.password == 'Admin_1u$er'){
-            user.Admin = true
-        }else{
-            user.Admin = false
-        }
-        bcryptjs.genSalt(10)
-        .then(salt =>{
-            bcryptjs.hash(user.password, salt)
-            .then(encrpytedPassword =>{
-                user.password = encrpytedPassword
-                next()
-            })
-        })
-    }else{
-        next()
-    }
-})
+
 //own static model
-userSchema.statics.findByCredentials = function(email, password){
+userSchema.statics.findByCredentials = function(username, password){
     const User = this
-    return User.findOne({email})
+    return User.findOne({username})
         .then(user =>{
             if(!user){
-                return Promise.reject({errors:'invalid email'})
+                return Promise.reject({errors:'invalid username/password'})
+            }else{
+                if(password == user.password){
+                    return Promise.resolve(user)
+                }else{
+                    return Promise.reject({errors:'invalid Password'})
+                }
             }
-            return bcryptjs.compare(password, user.password)
-                        .then(result =>{
-                            if(result){
-                                return Promise.resolve(user)
-                            }else {
-                                return Promise.reject({errors:'invalid Password'})
-                            }
-                        })
         }) 
         .catch(err =>{
             return Promise.reject(err)
